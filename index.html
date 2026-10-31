@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Onboarding Buddy — To Do List</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Tailwind config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50:  "#eef2ff",
+                100: "#e0e7ff",
+                500: "#6366f1",
+                600: "#4f46e5",
+                700: "#4338ca",
+              },
+              surface: "#f8fafc",
+            },
+            fontFamily: {
+              sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body class="min-h-screen bg-gradient-to-br from-primary-50 via-white to-indigo-50 font-sans text-slate-700 antialiased">
+
+    <!-- ========== HEADER ========== -->
+    <header class="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
+      <div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
+        <!-- Logo icon -->
+        <div class="w-9 h-9 rounded-xl bg-primary-600 flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-base font-bold text-slate-800 leading-tight">Onboarding Buddy System</h1>
+          <p class="text-xs text-slate-400 leading-tight">Rancang Bangun Sistem Onboarding Karyawan Baru</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <main class="max-w-2xl mx-auto px-4 py-8 space-y-6">
+
+      <!-- Stats Row -->
+      <div id="stats-row" class="grid grid-cols-3 gap-3 text-center">
+        <div class="stat-card bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
+          <p class="text-2xl font-bold text-primary-600" id="stat-total">0</p>
+          <p class="text-xs text-slate-400 mt-0.5 font-medium">Total Tasks</p>
+        </div>
+        <div class="stat-card bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
+          <p class="text-2xl font-bold text-amber-500" id="stat-active">0</p>
+          <p class="text-xs text-slate-400 mt-0.5 font-medium">Active</p>
+        </div>
+        <div class="stat-card bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
+          <p class="text-2xl font-bold text-emerald-500" id="stat-completed">0</p>
+          <p class="text-xs text-slate-400 mt-0.5 font-medium">Completed</p>
+        </div>
+      </div>
+
+      <!-- Add Task Card -->
+      <section aria-label="Tambah task baru" class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+        <h2 class="text-sm font-semibold text-slate-600 mb-3">Tambah Task Baru</h2>
+        <form id="task-form" class="flex gap-2">
+          <input
+            id="task-input"
+            type="text"
+            placeholder="Contoh: Review dokumen onboarding…"
+            autocomplete="off"
+            maxlength="120"
+            class="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-700 placeholder-slate-400
+                   focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
+          />
+          <button
+            type="submit"
+            class="rounded-xl bg-primary-600 hover:bg-primary-700 active:bg-primary-700 text-white px-5 py-2.5 text-sm font-semibold
+                   shadow-sm transition-all duration-200 hover:shadow-md flex items-center gap-1.5 flex-shrink-0"
+          >
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+            </svg>
+            <span>Tambah</span>
+          </button>
+        </form>
+        <!-- Inline error message -->
+        <p id="form-error" class="hidden text-xs text-red-500 mt-2 pl-1">Task tidak boleh kosong.</p>
+      </section>
+
+      <!-- Filter Tabs + Task List Card -->
+      <section aria-label="Daftar task" class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+
+        <!-- Filter Tabs -->
+        <div class="flex border-b border-slate-100" role="tablist" aria-label="Filter task">
+          <button class="filter-btn active-filter flex-1 py-3 text-sm font-medium transition-colors" data-filter="all" role="tab" aria-selected="true">Semua</button>
+          <button class="filter-btn flex-1 py-3 text-sm font-medium transition-colors" data-filter="active" role="tab" aria-selected="false">Active</button>
+          <button class="filter-btn flex-1 py-3 text-sm font-medium transition-colors" data-filter="completed" role="tab" aria-selected="false">Completed</button>
+        </div>
+
+        <!-- Task List -->
+        <ul id="task-list" class="divide-y divide-slate-50" role="list" aria-live="polite" aria-label="Daftar task">
+          <!-- Tasks rendered by JS -->
+        </ul>
+
+        <!-- Empty state -->
+        <div id="empty-state" class="hidden flex-col items-center justify-center py-16 px-6 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-primary-50 flex items-center justify-center mb-4 mx-auto">
+            <svg class="w-8 h-8 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+          </div>
+          <p class="text-sm font-semibold text-slate-600">Belum ada task di sini</p>
+          <p class="text-xs text-slate-400 mt-1" id="empty-sub">Tambahkan task pertama Anda di atas.</p>
+        </div>
+
+        <!-- Footer: Clear Completed -->
+        <div id="list-footer" class="hidden flex items-center justify-between px-5 py-3 bg-slate-50 border-t border-slate-100">
+          <span class="text-xs text-slate-400" id="footer-count"></span>
+          <button
+            id="clear-completed-btn"
+            class="text-xs text-slate-400 hover:text-red-500 font-medium transition-colors duration-200"
+          >
+            Hapus Completed
+          </button>
+        </div>
+
+      </section>
+    </main>
+
+    <!-- ========== EDIT MODAL ========== -->
+    <div id="edit-modal" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <!-- Backdrop -->
+      <div id="modal-backdrop" class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"></div>
+      <!-- Panel -->
+      <div class="modal-panel relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 space-y-4">
+        <h3 id="modal-title" class="text-base font-bold text-slate-800">Edit Task</h3>
+        <input
+          id="edit-input"
+          type="text"
+          maxlength="120"
+          class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-700
+                 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
+        />
+        <p id="edit-error" class="hidden text-xs text-red-500">Task tidak boleh kosong.</p>
+        <div class="flex gap-2 justify-end pt-1">
+          <button id="modal-cancel" class="rounded-xl px-4 py-2 text-sm font-medium text-slate-500 hover:bg-slate-100 transition">Batal</button>
+          <button id="modal-save"   class="rounded-xl px-5 py-2 text-sm font-semibold bg-primary-600 text-white hover:bg-primary-700 transition shadow-sm">Simpan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script -->
+    <script src="script.js"></script>
+  </body>
+</html>
